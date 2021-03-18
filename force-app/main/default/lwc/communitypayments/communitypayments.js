@@ -21,7 +21,6 @@ export default class Findockcommunitypayments extends NavigationMixin(LightningE
     // Capture field input
     handleChange(event) {
         this[event.target.name] = event.target.value;
-        console.log([event.target.name] + ': ' + event.target.value)
     }
 
     // Handle the clicking of the 'To payment' button

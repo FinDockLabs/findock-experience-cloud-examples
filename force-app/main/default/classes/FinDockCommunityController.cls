@@ -1,6 +1,7 @@
 public class FinDockCommunityController {
+    // Don't forget to give your Site Guest User access to this controller!
 
-    // Define your DTO. This is just a selection of fields, find more in the API Reference: https://docs.findock.com/api
+    // Define your DTO. This is just a bare minimum selection of fields for a one-time payment, find more in the API Reference: https://docs.findock.com/api
     public class PaymentIntent {
         @AuraEnabled
         public String Id{get;set;}
