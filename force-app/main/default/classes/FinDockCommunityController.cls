@@ -2,7 +2,7 @@ public class FinDockCommunityController {
 
     public class PaymentIntent {
         @AuraEnabled
-        public String Id{get;set}
+        public String Id{get;set;}
         @AuraEnabled
         public String SuccessURL{get;set;}
         @AuraEnabled
