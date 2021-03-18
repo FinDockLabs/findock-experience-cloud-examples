@@ -3,23 +3,45 @@ import { NavigationMixin } from 'lightning/navigation';
 import submit from '@salesforce/apex/FinDockCommunityController.submit';
 
 export default class Findockcommunitypayments extends NavigationMixin(LightningElement) {
+    amount = 0;
+    firstName = '';
+    lastName = '';
+    email = '';
+    paymentMethod = '';
 
-    @track RedirectURL = '';
-    @track ErrorMessage = '';
+    // Options for payment method combobox
+    get payment_options() {
+        return [
+            { label: 'Credit Card', value: 'CreditCard' },
+            { label: 'iDEAL', value: 'ideal' },
+            { label: 'Direct Debit', value: 'Direct Debit' },
+        ];
+    }
+
+    // Capture field input
+    handleChange(event) {
+        this[event.target.name] = event.target.value;
+        console.log([event.target.name] + ': ' + event.target.value)
+    }
+
+    // Handle the clicking of the 'To payment' button
     handleClick( event ) {
+        // Create our API input from the user input
         var input = {
             SuccessURL: 'https://example.com/success',
             FailureURL: 'https://example.com/failure',
             Payer: {
                 Contact: {
-                    SalesforceFields : {'FirstName':'Bob','LastName':'Smith'}
+                    SalesforceFields : {'FirstName': this.firstName,'LastName': this.lastName, 'Email' : this.email}
                 }
             },
             OneTime: {
-                Amount: '10'
+                Amount: this.amount
             },
             PaymentMethod: {
-                Name: 'CreditCard'
+                Name: this.paymentMethod
+                // Note that we are not passing a specific Payment Processor, 
+                // so the API will use the default processor for this payment method set in FinDock
             },
         }
         // Bundle the form input with additional parameters that the API requires...
@@ -41,7 +63,10 @@ export default class Findockcommunitypayments extends NavigationMixin(LightningE
         // Catch errors
         }).catch ( error => {
            // Handle errors based on error message
-            console.log('Something went horribly wrong! ' + error)
+            console.error('Something went horribly wrong! Specifically:')
+            console.error(error.name );
+            console.error(error.message );
+            console.error(error.stack );
         });
     }
 }
