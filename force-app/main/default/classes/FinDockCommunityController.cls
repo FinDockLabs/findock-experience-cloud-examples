@@ -1,5 +1,6 @@
 public class FinDockCommunityController {
 
+    // Define your DTO. This is just a selection of fields, find more in the API Reference: https://docs.findock.com/api
     public class PaymentIntent {
         @AuraEnabled
         public String Id{get;set;}
@@ -15,10 +16,8 @@ public class FinDockCommunityController {
         public OneTime OneTime{get;set;}
         @AuraEnabled
         public PaymentMethod PaymentMethod{get;set;}
-        @AuraEnabled
-        public Settings Settings{get;set;}
-
     }
+
     public class Payer {
         @AuraEnabled
         public Contact Contact{get;set;}
@@ -43,17 +42,17 @@ public class FinDockCommunityController {
         public string Target{get;set;}
     }
 
-    public class Settings {
+    public class Error {
         @AuraEnabled
-        public string SourceConnector{get;set;}
+        public string error_message{get;set;}
         @AuraEnabled
-        public string ProcessingType{get;set;}
+        public string error_code{get;set;}
     }
 
     @AuraEnabled(cacheable=false)
     public static PaymentIntent submit(String jsonObject) {
         
-        // Build your API request
+        // Build your API request...
         RestRequest req = new RestRequest();
         RestResponse res = new RestResponse();
         RestContext.request = req;
@@ -61,38 +60,43 @@ public class FinDockCommunityController {
         req.requestURI = URL.getSalesforceBaseUrl().toExternalForm()+'/services/apexrest/v2/PaymentIntent';
         req.httpMethod = 'POST';
 
+        // ...with the input from the user...
         PaymentIntent body = (PaymentIntent)JSON.deserializeStrict(jsonObject, PaymentIntent.class );
         req.requestBody = Blob.valueOf(JSON.serialize(body, true));
 
+        // ...and send the Payment Intent to the FinDock Payment API.
         cpm.API_PaymentIntent_V2.postPaymentIntent();
 
+        // Get the response from the FinDock Payment API...
         Map<String, Object> responseMap = (Map<String, Object>)JSON.deserializeUntyped(res.responseBody.toString());
         system.debug(responseMap);
 
-        PaymentIntent result = new PaymentIntent();
-        result.Id = (String)responseMap.get('Id');
-        result.RedirectUrl = (String)responseMap.get('RedirectURL');
+        // Check for errors.
+        if (res.statusCode != 200) {
+          // do something to throw or handle error
+          system.debug(responseMap);
+        }
 
-        // Get the Payment Method from the response
-        Map<String, Object> paymentMethodMap = (Map<String, Object>)responseMap.get('PaymentMethod');
-        if (paymentMethodMap != null) {
-            result.PaymentMethod = new PaymentMethod();
-        	result.PaymentMethod.Name = (String)paymentMethodMap.get('Name');   
-            result.PaymentMethod.Processor = (String)paymentMethodMap.get('Processor');
-            result.PaymentMethod.Target = (String)paymentMethodMap.get('Target'); 
+        PaymentIntent result = new PaymentIntent();
+        // If API call was successfull.
+        if (res.statusCode == 200) {
+            // ...parse valuable data like the Payment Intent Id of your call that's stable accross all FinDock communication like webhooks...  
+            
+            result.Id = (String)responseMap.get('Id');
+        
+            // ...and maybe some additional information like Payment method and Processor used
+            Map<String, Object> paymentMethodMap = (Map<String, Object>)responseMap.get('PaymentMethod');
+            if (paymentMethodMap != null) {
+                result.PaymentMethod = new PaymentMethod();
+                result.PaymentMethod.Name = (String)paymentMethodMap.get('Name');   
+                result.PaymentMethod.Processor = (String)paymentMethodMap.get('Processor');
+            }
+
+            // ...but most important: the Redirect URL to the Hosted Payment Page of the Processor!
+            result.RedirectUrl = (String)responseMap.get('RedirectURL'); 
         }
         
-        // // Check for errors in case something went wrong (base on res.statusCode?)
-        // if (responseMap.containsKey('Errors')) {
-        //     List<Object> errors = (List<Object>)responseMap.get('Errors');
-        //     if (!errors.isEmpty()) {
-        //         result.firstErrorMessage = (String)((Map<String, Object>)errors[0]).get('error_message');
-        //     }
-        // }
-
-        // Return the result
+        // Return the result to your LWC
         return result;
-
-     }
-
+    }
 }

@@ -1,11 +1,25 @@
 <template>
+    <lightning-card  title="Hello">
     <div class="slds-m-top_small slds-m-bottom_medium">
-        <h2 class="slds-text-heading_small slds-m-bottom_small">
-            Click the buttons to activate the <code>onclick</code> handler and submit the payment.
-        </h2>
-        <lightning-button variant="base" label="Base" title="Submit" onclick={handleClick} class="slds-m-left_x-small">
+        <div class="slds-m-top_medium slds-m-bottom_x-large">
+            <h2 class="slds-text-heading_medium slds-m-bottom_medium">
+                Please enter your personal details.
+            </h2>
+            <div class="slds-p-around_medium lgc-bg">
+                <lightning-input type="text" label="First name"></lightning-input>
+            </div>
+            <div class="slds-p-around_medium lgc-bg">
+                <lightning-input type="text" label="Last name"></lightning-input>
+            </div>
+            <div class="slds-p-around_medium lgc-bg">
+                <lightning-input type="text" label="E-mail address"></lightning-input>
+            </div>
+
+        </div>
+        <lightning-button variant="base" label="Base" title="To payment" onclick={handleClick} class="slds-m-left_x-small">
         </lightning-button>
     </div>
+    </lightning-card>
     <div class="slds-m-vertical_medium">
         <p>Result: <span class="slds-text-heading_small">{RedirectURL}</span></p>
     </div>
