@@ -26,7 +26,7 @@ public class FinDockCommunityController {
 
     public class Contact {
         @AuraEnabled
-        Map<String, String> SalesforceFields{get;set;}
+        public Map<String, String> SalesforceFields{get;set;}
     }
 
     public class OneTime {
@@ -62,31 +62,33 @@ public class FinDockCommunityController {
         req.httpMethod = 'POST';
 
         PaymentIntent body = (PaymentIntent)JSON.deserializeStrict(jsonObject, PaymentIntent.class );
-        req.requestBody = Blob.valueOf(JSON.serializePretty(body));
+        req.requestBody = Blob.valueOf(JSON.serialize(body, true));
 
-        // huh? hoe doet restcontext automatisch de request & response??
         cpm.API_PaymentIntent_V2.postPaymentIntent();
 
         Map<String, Object> responseMap = (Map<String, Object>)JSON.deserializeUntyped(res.responseBody.toString());
+        system.debug(responseMap);
+
         PaymentIntent result = new PaymentIntent();
-        result.PaymentIntent.Id = (String)responseMap.get('Id');
+        result.Id = (String)responseMap.get('Id');
         result.RedirectUrl = (String)responseMap.get('RedirectURL');
 
         // Get the Payment Method from the response
         Map<String, Object> paymentMethodMap = (Map<String, Object>)responseMap.get('PaymentMethod');
         if (paymentMethodMap != null) {
+            result.PaymentMethod = new PaymentMethod();
         	result.PaymentMethod.Name = (String)paymentMethodMap.get('Name');   
             result.PaymentMethod.Processor = (String)paymentMethodMap.get('Processor');
             result.PaymentMethod.Target = (String)paymentMethodMap.get('Target'); 
         }
         
-        // Check for errors in case something went wrong (base on res.statusCode?)
-        if (responseMap.containsKey('Errors')) {
-            List<Object> errors = (List<Object>)responseMap.get('Errors');
-            if (!errors.isEmpty()) {
-                result.firstErrorMessage = (String)((Map<String, Object>)errors[0]).get('error_message');
-            }
-        }
+        // // Check for errors in case something went wrong (base on res.statusCode?)
+        // if (responseMap.containsKey('Errors')) {
+        //     List<Object> errors = (List<Object>)responseMap.get('Errors');
+        //     if (!errors.isEmpty()) {
+        //         result.firstErrorMessage = (String)((Map<String, Object>)errors[0]).get('error_message');
+        //     }
+        // }
 
         // Return the result
         return result;

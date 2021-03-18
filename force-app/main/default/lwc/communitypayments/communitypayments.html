@@ -1,14 +1,12 @@
 <template>
-    <div class="slds-m-top_small slds-m-bottom_medium"></div>
+    <div class="slds-m-top_small slds-m-bottom_medium">
         <h2 class="slds-text-heading_small slds-m-bottom_small">
             Click the buttons to activate the <code>onclick</code> handler and submit the payment.
         </h2>
-    
         <lightning-button variant="base" label="Base" title="Submit" onclick={handleClick} class="slds-m-left_x-small">
         </lightning-button>
     </div>
-
     <div class="slds-m-vertical_medium">
-        <p>Result: <span class="slds-text-heading_small">{result}</span></p>
+        <p>Result: <span class="slds-text-heading_small">{RedirectURL}</span></p>
     </div>
 </template>
