@@ -1,7 +1,10 @@
 public class FinDockCommunityController {
-    // Don't forget to give your Site Guest User access to this controller!
+    // Don't forget to give your Site Guest User access to this Apex class through a permission set!
+    // To execute the API call, the Site Guest User also needs the FinDock Site Guest User permission set
+    // and the permission set for your Processor of choice. Read more: https://docs.findock.com/permissions
 
-    // Define your DTO. This is just a bare minimum selection of fields for a one-time payment, find more in the API Reference: https://docs.findock.com/api
+    // Define your DTO. This is just a bare minimum selection of fields for a one-time payment, 
+    // find more in the API Reference: https://docs.findock.com/api
     public class PaymentIntent {
         @AuraEnabled
         public String Id{get;set;}
