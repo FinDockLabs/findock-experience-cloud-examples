@@ -2,6 +2,9 @@
 
 This repository contains example code to integrate the [FinDock](www.findock.com) payment API with Salesforce Communities. They are free to use and extend as-is. FinDock does not provide support on LWC, Apex or Flow development, but can help you with questions on the FinDock API.
 
+The example code was intentionally left very basic (e.g. little proper error handling, no test code) to keep it easy to understand.
+Please make sure to implement proper coding standards yourself!
+
 For more information on the API, please visit:
 
 - [Getting started with the Payment API](https://docs.findock.com/getting-started-with-the-payment-api-v2)

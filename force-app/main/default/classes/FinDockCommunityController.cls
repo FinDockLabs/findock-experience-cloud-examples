@@ -96,10 +96,11 @@ public class FinDockCommunityController {
         }
 
         PaymentIntent result = new PaymentIntent();
+
         // If API call was successfull.
         if (res.statusCode == 200) {
-            // ...parse valuable data like the Payment Intent Id of your call that's stable accross all FinDock communication like webhooks...  
             
+            // ...parse valuable data like the Payment Intent Id of your call that's stable accross all FinDock communication like webhooks...  
             result.Id = (String)responseMap.get('Id');
         
             // ...and maybe some additional information like Payment method and Processor used
