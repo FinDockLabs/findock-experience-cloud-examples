@@ -22,21 +22,33 @@ public class FinDockCommunityController {
         public PaymentMethod PaymentMethod{get;set;}
     }
 
+    // Who is doing the payment, either a Contact or Account
     public class Payer {
         @AuraEnabled
         public Contact Contact{get;set;}
+        public Account Account{get;set;}
     }
 
+    // Get all the details of your Contact and / or Account
+    // you can set any Salesforce field - standard or custom - in the Salesforcefields object 
     public class Contact {
         @AuraEnabled
         public Map<String, String> SalesforceFields{get;set;}
     }
 
+    public class Account {
+        @AuraEnabled
+        public Map<String, String> SalesforceFields{get;set;}
+    }
+
+    // Data on a one-time payment. Replace with Recurring object for recurring payments.
     public class OneTime {
         @AuraEnabled
         public double Amount{get;set;}
     }
     
+    // How do you want the user to pay, and through what Payment Processor?
+    // Hardcode a list of supported payment methods, or query the /PaymentMethods API for a dynamic list.
     public class PaymentMethod {
         @AuraEnabled
         public string Name{get;set;}
@@ -46,6 +58,7 @@ public class FinDockCommunityController {
         public string Target{get;set;}
     }
 
+    // The API Error object, in case you want to handle it
     public class Error {
         @AuraEnabled
         public string error_message{get;set;}
@@ -53,6 +66,7 @@ public class FinDockCommunityController {
         public string error_code{get;set;}
     }
 
+    // Submit the payment to the Payment API.
     @AuraEnabled(cacheable=false)
     public static PaymentIntent submit(String jsonObject) {
         
@@ -68,7 +82,7 @@ public class FinDockCommunityController {
         PaymentIntent body = (PaymentIntent)JSON.deserializeStrict(jsonObject, PaymentIntent.class );
         req.requestBody = Blob.valueOf(JSON.serialize(body, true));
 
-        // ...and send the Payment Intent to the FinDock Payment API.
+        // ...and send the Payment Intent to the FinDock Payment API, by calling the Apex method!
         cpm.API_PaymentIntent_V2.postPaymentIntent();
 
         // Get the response from the FinDock Payment API...
@@ -77,7 +91,7 @@ public class FinDockCommunityController {
 
         // Check for errors.
         if (res.statusCode != 200) {
-          // do something to throw or handle error
+          // Do something to throw or handle error. See Error object.
           system.debug(responseMap);
         }
 
