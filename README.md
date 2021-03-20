@@ -15,8 +15,8 @@ For more information on the API, please visit:
 This repository contains code for 3 examples:
 
 - A LWC component `communitypayments` with Apex Controller `FinDockCommunityController.cls` that can be added to a Salesforce Community page.
-- A Flow action `...` with Apex Controller `....` that can be ...
-- A Flow action `FinDockSubmitPaymentIntentAction.cls` that can be integrated in a Flow by just setting the variables to pass to the API. Example Flow that you can deploy to your org: `flow/FinDock_Payment.flow-meta.xml`
+- A Flow action Apex class `...` that can be ...
+- A Flow action Apex class `FinDockSubmitPaymentIntentAction.cls` that can be integrated in a Flow by just setting the variables to pass to the API. You can then embed this Flow in a Lightning Component (Aura) `...`  and add that to a Salesforce Community page. Example Flow that you can deploy to your org: `flow/FinDock_Payment.flow-meta.xml`
 
 ## Salesforce DX Project
 
