@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <actionCalls>
-        <name>SubmitPayment</name>
-        <label>Submit Payment</label>
+        <name>SubmitPaymentIntent</name>
+        <label>SubmitPaymentIntent</label>
         <locationX>314</locationX>
         <locationY>398</locationY>
         <actionName>FinDockCommunityAction</actionName>
@@ -29,14 +29,14 @@
             <assignToReference>redirect_url</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>SubmitPayment.redirectURL</elementReference>
+                <elementReference>SubmitPaymentIntent.redirectURL</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
             <assignToReference>status</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>SubmitPayment.status</elementReference>
+                <elementReference>SubmitPaymentIntent.status</elementReference>
             </value>
         </assignmentItems>
         <connector>
@@ -56,7 +56,7 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>SubmitPayment</targetReference>
+            <targetReference>SubmitPaymentIntent</targetReference>
         </connector>
     </assignments>
     <constants>
