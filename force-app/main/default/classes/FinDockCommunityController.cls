@@ -1,3 +1,6 @@
+/* INSERT DESCRIPTION
+    */
+
 public class FinDockCommunityController {
     /* Don't forget to give your Site Guest User access to this Apex class through a permission set!
     To execute the API call, the Site Guest User also needs the FinDock Site Guest User permission set
