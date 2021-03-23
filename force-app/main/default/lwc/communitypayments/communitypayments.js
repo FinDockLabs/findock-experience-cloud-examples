@@ -11,6 +11,7 @@ export default class Findockcommunitypayments extends NavigationMixin(LightningE
 
     // Options for payment method combobox. 
     // Instead of hardcoding, you could get the values of the cpm__Payment_Method__c picklist on cpm__Installment__c.
+    // TODO: implement with getPicklistValues
     get payment_options() {
         return [
             { label: 'Credit Card', value: 'CreditCard' },
