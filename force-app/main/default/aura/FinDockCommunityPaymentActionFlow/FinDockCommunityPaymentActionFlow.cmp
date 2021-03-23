@@ -1,4 +1,4 @@
 <aura:component implements="forceCommunity:availableForAllPageTypes" access="global">
     <aura:handler name="init" value="{!this}" action="{!c.init}" />
-    <lightning:flow aura:id="FinDockCommunityPaymentInvocablesFlow" />
+    <lightning:flow aura:id="FinDockCommunityPaymentFlow" />
 </aura:component>
