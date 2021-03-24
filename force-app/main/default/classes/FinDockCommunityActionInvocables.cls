@@ -49,6 +49,8 @@
         public class OneTime {
             @AuraEnabled
             public double Amount{get;set;}
+            @AuraEnabled
+            public String Id{get;set;}
         }
         
         // How do you want the user to pay, and through what Payment Processor?
@@ -87,6 +89,8 @@
             @InvocableVariable
             public Double amount;
             @InvocableVariable
+            public String installmentId;
+            @InvocableVariable
             public String contactFirstName;
             @InvocableVariable
             public String contactLastName;
@@ -117,6 +121,8 @@
                 // Create a OneTime object with an Amount. Replace with Recurring object for Recurring payments.
                 requestBody.OneTime = new OneTime();
                 requestBody.OneTime.Amount = flowInput.amount;
+                // If you provide an existing InstallmentId, you can leave OneTime.Amount and Payer empty or out.
+                // requestBody.OneTime.Id = flowInput.installmentId;
 
                 // Contact and Account fields can be passed in a SalesforceFields object that accepts ALL standard and custom fields on these objects.
                 Map<String, String> contactFields = new Map<String, String>();

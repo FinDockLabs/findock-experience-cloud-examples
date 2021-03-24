@@ -8,6 +8,7 @@ export default class Findockcommunitypayments extends NavigationMixin(LightningE
     lastName = '';
     email = '';
     paymentMethod = '';
+    // installmentId = '';
 
     // Options for payment method combobox. 
     // Instead of hardcoding, you could get the values of the cpm__Payment_Method__c picklist on cpm__Installment__c.
@@ -37,7 +38,9 @@ export default class Findockcommunitypayments extends NavigationMixin(LightningE
                 }
             },
             OneTime: {
-                Amount: this.amount
+                Amount: this.amount,
+                // If you provide an existing InstallmentId, you can leave OneTime.Amount and Payer empty or out.
+                // Id: this.installmentId
             },
             PaymentMethod: {
                 Name: this.paymentMethod

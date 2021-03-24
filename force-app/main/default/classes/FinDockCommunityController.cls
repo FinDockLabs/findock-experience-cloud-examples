@@ -49,6 +49,8 @@ public class FinDockCommunityController {
     public class OneTime {
         @AuraEnabled
         public double Amount{get;set;}
+        @AuraEnabled
+        public String Id{get;set;}
     }
     
     // How do you want the user to pay, and through what Payment Processor?
