@@ -10,66 +10,49 @@
         //Define your DTO. This is just a bare minimum selection of fields for a one-time payment, 
         //find more in the API Reference: https://docs.findock.com/api
         public class PaymentIntent {
-            @AuraEnabled
-            public String Id{get;set;}
-            @AuraEnabled
-            public String SuccessURL{get;set;}
-            @AuraEnabled
-            public String FailureURL{get;set;}
-            @AuraEnabled
-            public String RedirectURL{get;set;}
-            @AuraEnabled
-            public Payer Payer{get;set;}
-            @AuraEnabled
-            public OneTime OneTime{get;set;}
-            @AuraEnabled
-            public PaymentMethod PaymentMethod{get;set;}
+            public String Id;
+            public String SuccessURL;
+            public String FailureURL;
+            public String RedirectURL;
+            public Payer Payer;
+            public OneTime OneTime;
+            public PaymentMethod PaymentMethod;
         }
     
         // Who is doing the payment, either a Contact or Account
         public class Payer {
-            @AuraEnabled
-            public Contact Contact{get;set;}
-            public Account Account{get;set;}
+            public Contact Contact;
+            public Account Account;
         }
     
         // Get all the details of your Contact and / or Account
         // you can set any Salesforce field - standard or custom - in the Salesforcefields object 
         public class Contact {
-            @AuraEnabled
-            public Map<String, String> SalesforceFields{get;set;}
+            public Map<String, String> SalesforceFields;
         }
     
         public class Account {
-            @AuraEnabled
-            public Map<String, String> SalesforceFields{get;set;}
+            public Map<String, String> SalesforceFields;
         }
     
         // Data on a one-time payment. Replace with Recurring object for recurring payments.
         public class OneTime {
-            @AuraEnabled
-            public double Amount{get;set;}
-            @AuraEnabled
-            public String Id{get;set;}
+            public double Amount;
+            public String Id;
         }
         
         // How do you want the user to pay, and through what Payment Processor?
         // Hardcode a list of supported payment methods, or query the /PaymentMethods API for a dynamic list.
         public class PaymentMethod {
-            @AuraEnabled
-            public string Name{get;set;}
-            @AuraEnabled
-            public string Processor{get;set;}
-            @AuraEnabled
-            public string Target{get;set;}
+            public string Name;
+            public string Processor;
+            public string Target;
         }
     
         // The API Error object, in case you want to handle it
         public class Error {
-            @AuraEnabled
-            public string error_message{get;set;}
-            @AuraEnabled
-            public string error_code{get;set;}
+            public string error_message;
+            public string error_code;
         }
 
         /* 
