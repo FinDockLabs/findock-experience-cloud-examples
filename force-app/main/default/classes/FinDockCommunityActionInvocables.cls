@@ -55,6 +55,13 @@
             public string error_code;
         }
 
+        // PaymentIntent response object to account for the fact that the API can respond with a PaymentIntent or Error object
+        public class PaymentIntentResponse {
+            public PaymentIntent paymentIntent;
+            public Error error;
+            public Integer status;
+        }
+
         /* 
         Submit the the input from a Flow (in the shape of a JSON String) to the Payment API and returns InvocableVariables to Flow.
         Unfortunately we cannot easily build a PaymentIntent object in the Flow because:
@@ -85,6 +92,8 @@
             public String paymentProcessor;
             @InvocableVariable
             public String redirectURL;
+            @InvocableVariable
+            public String errorMessage;
             @InvocableVariable
             public Integer status;
         }
@@ -121,20 +130,33 @@
                 requestBody.PaymentMethod = new PaymentMethod();
                 requestBody.PaymentMethod.Name = flowInput.paymentMethod;
 
-                // Submit the request body to the API
-                PaymentIntent response = PaymentIntent.submit(requestBody);
+                // Submit the request body to the API and get the response
+                PaymentIntentResponse response = PaymentIntent.submit(requestBody);
 
-                // Get response parameters to return to Flow
+                // Build output to Flow based on what whether PaymentIntent or Errors were returned
                 FlowInputOutput output = new FlowInputOutput();
-                output.redirectURL = response.RedirectURL;
-                
+
+                output.status = response.status;
+
+                // Get RedirectURL if things went well
+                if (response.status == 200) {
+                    PaymentIntent pi = response.PaymentIntent;
+                    output.redirectURL = pi.RedirectURL;
+                }
+
+                // Get error message if things didn't go so well
+                if (response.status != 200) {
+                    Error err = response.Error;
+                    output.errorMessage = err.error_message;
+                }
+                     
                 outputs.add(output);
             }
             return outputs;
         }
     
         // Submit the payment to the Payment API.
-        public static PaymentIntent submit(PaymentIntent body) {
+        public static PaymentIntentResponse submit(PaymentIntent body) {
             
             // Build your API request...
             RestRequest req = new RestRequest();
@@ -154,31 +176,42 @@
             // Get the response from the FinDock Payment API...
             Map<String, Object> responseMap = (Map<String, Object>)JSON.deserializeUntyped(res.responseBody.toString());
             system.debug(responseMap);
+
+            PaymentIntentResponse result = new PaymentIntentResponse();
+            result.status = res.statusCode;
     
             // Check for errors.
             if (res.statusCode != 200) {
-              // Do something to throw or handle error. See Error object.
-              system.debug(responseMap);
+                // Do something to throw or handle error. See Error object.
+              
+                Error error = new Error();
+                //get first error
+                List<Object> errors = (List<Object>)responseMap.get('Errors');
+                if (!errors.isEmpty()) {
+                    error.error_message = (String)((Map<String, Object>)errors[0]).get('error_message');
+                    error.error_code = (String)((Map<String, Object>)errors[0]).get('error_code');
+                }
+                system.debug(error);
+                result.Error = error;
             }
-    
-            PaymentIntent result = new PaymentIntent();
-    
+
             // If API call was successfull.
             if (res.statusCode == 200) {
+                PaymentIntent pi = new PaymentIntent();
                 
                 // ...parse valuable data like the Payment Intent Id of your call that's stable accross all FinDock communication like webhooks...  
-                result.Id = (String)responseMap.get('Id');
+                pi.Id = (String)responseMap.get('Id');
             
                 // ...and maybe some additional information like Payment method and Processor used
                 Map<String, Object> paymentMethodMap = (Map<String, Object>)responseMap.get('PaymentMethod');
                 if (paymentMethodMap != null) {
-                    result.PaymentMethod = new PaymentMethod();
-                    result.PaymentMethod.Name = (String)paymentMethodMap.get('Name');   
-                    result.PaymentMethod.Processor = (String)paymentMethodMap.get('Processor');
+                    pi.PaymentMethod = new PaymentMethod();
+                    pi.PaymentMethod.Name = (String)paymentMethodMap.get('Name');   
+                    pi.PaymentMethod.Processor = (String)paymentMethodMap.get('Processor');
                 }
-    
                 // ...but most important: the Redirect URL to the Hosted Payment Page of the Processor!
-                result.RedirectUrl = (String)responseMap.get('RedirectURL'); 
+                pi.RedirectUrl = (String)responseMap.get('RedirectURL'); 
+                result.paymentIntent = pi;
             }
             
             // Return the result to your LWC
