@@ -3,7 +3,7 @@
     <actionCalls>
         <name>SubmitPaymentIntentInvocables</name>
         <label>SubmitPaymentIntentInvocables</label>
-        <locationX>182</locationX>
+        <locationX>380</locationX>
         <locationY>398</locationY>
         <actionName>FinDockCommunityActionInvocables</actionName>
         <actionType>apex</actionType>
@@ -58,14 +58,21 @@
     <apiVersion>51.0</apiVersion>
     <assignments>
         <name>Set_API_Response_Variables</name>
-        <label>Set RedirectURL</label>
-        <locationX>182</locationX>
+        <label>Set RedirectURL and Status</label>
+        <locationX>380</locationX>
         <locationY>518</locationY>
         <assignmentItems>
             <assignToReference>redirect_url</assignToReference>
             <operator>Assign</operator>
             <value>
                 <elementReference>SubmitPaymentIntentInvocables.redirectURL</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>status</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>SubmitPaymentIntentInvocables.status</elementReference>
             </value>
         </assignmentItems>
         <connector>
@@ -75,7 +82,7 @@
     <assignments>
         <name>Set_Payment_Method_Choice</name>
         <label>Set Payment Method Choice</label>
-        <locationX>182</locationX>
+        <locationX>380</locationX>
         <locationY>278</locationY>
         <assignmentItems>
             <assignToReference>payment_method_choice</assignToReference>
@@ -110,16 +117,16 @@
         </value>
     </constants>
     <decisions>
-        <name>Status_Decision</name>
-        <label>Status Decision</label>
+        <name>Do_I_need_to_redirect</name>
+        <label>Do I need to redirect?</label>
         <locationX>182</locationX>
-        <locationY>638</locationY>
+        <locationY>758</locationY>
         <defaultConnector>
-            <targetReference>Oops</targetReference>
+            <targetReference>Redirect_Screen_Success</targetReference>
         </defaultConnector>
-        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
         <rules>
-            <name>Success</name>
+            <name>No</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
                 <leftValueReference>redirect_url</leftValueReference>
@@ -129,7 +136,32 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Redirect_Screen_0</targetReference>
+                <targetReference>Redirect_Screen_0_0</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Status_Decision</name>
+        <label>Status Decision</label>
+        <locationX>380</locationX>
+        <locationY>638</locationY>
+        <defaultConnector>
+            <targetReference>Oops</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Error</defaultConnectorLabel>
+        <rules>
+            <name>Success</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <numberValue>200.0</numberValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Do_I_need_to_redirect</targetReference>
             </connector>
             <label>Success</label>
         </rules>
@@ -171,7 +203,7 @@
     <screens>
         <name>FinDock_Community_Payment</name>
         <label>FinDock Community Payment</label>
-        <locationX>182</locationX>
+        <locationX>380</locationX>
         <locationY>158</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
@@ -217,7 +249,7 @@
     <screens>
         <name>Oops</name>
         <label>Oops!</label>
-        <locationX>314</locationX>
+        <locationX>578</locationX>
         <locationY>758</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
@@ -231,29 +263,45 @@
         <showHeader>true</showHeader>
     </screens>
     <screens>
-        <name>Redirect_Screen_0</name>
+        <name>Redirect_Screen_0_0</name>
         <label>Redirect Screen</label>
         <locationX>50</locationX>
-        <locationY>758</locationY>
+        <locationY>878</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
         <fields>
-            <name>redirect_url_to_click</name>
+            <name>redirect_url_to_click_0</name>
             <fieldText>&lt;p&gt;&lt;a href=&quot;{!redirect_url}&quot; rel=&quot;noopener noreferrer&quot; target=&quot;_blank&quot;&gt;To payment!&lt;/a&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>true</showHeader>
     </screens>
+    <screens>
+        <name>Redirect_Screen_Success</name>
+        <label>Redirect Screen Success</label>
+        <locationX>314</locationX>
+        <locationY>878</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <fields>
+            <name>redirect_url_to_click_0_0</name>
+            <fieldText>&lt;p&gt;&lt;a href=&quot;{!SuccessURL}&quot; rel=&quot;noopener noreferrer&quot; target=&quot;_blank&quot;&gt;Thank you!&lt;/a&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
     <start>
-        <locationX>56</locationX>
+        <locationX>254</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>FinDock_Community_Payment</targetReference>
         </connector>
     </start>
-    <status>Draft</status>
+    <status>Active</status>
     <variables>
         <name>payment_method_choice</name>
         <dataType>String</dataType>
