@@ -1,6 +1,6 @@
 # FinDock Community Payments examples
 
-This repository contains example code to integrate the [FinDock](www.findock.com) payment API with Salesforce Communities. They are free to use and extend as-is. FinDock does not provide support on LWC, Apex or Flow development, but can help you with questions on the FinDock API.
+This repository contains example code to integrate the [FinDock](www.findock.com) payment API with Salesforce Communities, in support of 2 blogs on the FinDock website. They are free to use and extend as-is. FinDock does not provide support on LWC, Apex or Flow development, but can help you with questions on the FinDock API.
 
 The example code was intentionally left very basic (e.g. little proper error handling, no test code) to keep it easy to understand.
 Please make sure to implement proper coding standards yourself!
@@ -14,9 +14,14 @@ For more information on the API, please visit:
 
 This repository contains code for 3 examples:
 
-- A LWC component `communitypayments` with Apex Controller `FinDockCommunityController.cls` that can be added to a Salesforce Community page.
-- A Flow action Apex class `FinDockCommunityAction.cls` you can integrate in a Flow, by passing a JSON object as String from the Flow to an `InvocableMethod` in the Apex class. You can then embed this Flow in a Lightning Component (Aura) `aura/FinDockCommunityPaymentActionFlow`  and add that to a Salesforce Community page. Example Flow that you can deploy to your org: `flows/FinDock_Community_Payment.flow-meta.xml`
-- A Flow action Apex class `FinDockCommunityActionInvocables.cls` that can be integrated in a Flow by just setting the `@InvocableVariables` to pass to the API. You can then embed this Flow in a Lightning Component (Aura) `aura/FinDockCommunityPaymentActionInvocablesFlow` and add that to a Salesforce Community page. Example Flow that you can deploy to your org: `flows/FinDock_Community_Payment_Invocables.flow-meta.xml`
+1. A LWC component `communitypayments` with Apex Controller `FinDockCommunityController.cls` that can be added to a Salesforce Community page.
+2. A Flow action Apex class `FinDockCommunityAction.cls` you can integrate in a Flow, by passing a JSON object as String from the Flow to an `InvocableMethod` in the Apex class. You can then embed this Flow in a Lightning Component (Aura) `aura/FinDockCommunityPaymentActionFlow`  and add that to a Salesforce Community page. Example Flow that you can deploy to your org: `flows/FinDock_Community_Payment.flow-meta.xml`
+3. A Flow action Apex class `FinDockCommunityActionInvocables.cls` that can be integrated in a Flow by just setting the `@InvocableVariables` to pass to the API. You can then embed this Flow in a Lightning Component (Aura) `aura/FinDockCommunityPaymentActionInvocablesFlow` and add that to a Salesforce Community page. Example Flow that you can deploy to your org: `flows/FinDock_Community_Payment_Invocables.flow-meta.xml`
+
+These examples are described in two blogs:
+
+- [Collect Payments in Salesforce Experience Cloud (Part 1)](https://findock.com/development/collect-payments-in-salesforce-experience-cloud-part-1/) describes example 1.
+- [Collect Payments in Salesforce Experience Cloud (Part 2)](https://findock.com/development/collect-payments-in-salesforce-experience-cloud-part-2/) describes examples 2 and 3.
 
 ## Salesforce DX Project
 
