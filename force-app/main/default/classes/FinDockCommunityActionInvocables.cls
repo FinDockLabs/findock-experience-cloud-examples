@@ -3,8 +3,8 @@
 
     public class FinDockCommunityActionInvocables {
         /* Don't forget to give your Site Guest User access to this Apex class through a permission set!
-        To execute the API call, the Site Guest User also needs the FinDock Site Guest User permission set
-        and the permission set for your Processor of choice. Read more: https://docs.findock.com/permissions
+        To execute the API call, the Site Guest User also needs the FinDock Experience Cloud permission set
+        and the permission set(s) for your Processor(s) of choice. Read more: https://docs.findock.com/permissions
         */
     
         //Define your DTO. This is just a bare minimum selection of fields for a one-time payment, 
