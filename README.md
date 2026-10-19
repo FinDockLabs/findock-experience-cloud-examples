@@ -50,8 +50,8 @@ When contributing to this repository, please first discuss the change you wish t
 
 ## Support
 
-FinDock Labs is a non-supported group in FinDock that releases applications. Despite the name, assistance for any of these applications is not provided by FinDock Support because they are not officially supported features. For a list of these apps, visit the FinDock Labs account on Github. 
+FinDock Labs is a non-supported group in FinDock that releases applications. Despite the name, assistance for any of these applications is not provided by FinDock Support because they are not officially supported features. For a list of these apps, visit the FinDock Labs account on GitHub. 
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](/LICENSE) file for details
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
